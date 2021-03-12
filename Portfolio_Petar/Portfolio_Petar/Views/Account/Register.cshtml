@@ -1,0 +1,42 @@
+﻿@using Portfolio_Petar.Models;
+@model RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    TempData["noComments"] = true;
+}
+@section styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+}
+<div class="register-box">
+    <h1>Register</h1>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+<div class="register-textbox">
+    <i class="fa fa-user"></i>
+    @Html.TextBoxFor(m => m.Username, new {placeholder = "Username" })
+</div>
+
+<div class="register-textbox">
+    <i class="fa fa-lock"></i>
+    @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
+</div>
+<div class="register-textbox">
+    <i class="fa fa-lock"></i>
+    @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "Retype Password" })
+</div>
+<div class="register-textbox">
+    <i class="fa fa-envelope"></i>
+    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", type="email" })
+</div>
+
+        <input class="register-button" type="submit" value="Sign me up">
+
+    if (!string.IsNullOrWhiteSpace(TempData["Error"] as string))
+      {
+        <p><span class="errorMessage">@(TempData["Error"] as string)</span></p>
+      }
+    }
+    
+</div>
+

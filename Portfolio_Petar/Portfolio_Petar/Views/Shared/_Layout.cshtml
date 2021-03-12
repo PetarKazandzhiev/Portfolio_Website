@@ -1,0 +1,86 @@
+﻿
+@{
+    var commentsOn = !((TempData["noComments"] as bool?) ?? false);
+    var Loggedin = ((Session?["Loggedin"] as bool?) ?? false);
+    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/b9adc97dea.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/hamburger_style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    @RenderSection("styles", required: false)
+</head>
+
+<body>
+
+    <nav role="navigation">
+        <div id="menuToggle">
+
+            <input type="checkbox" />
+
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+
+            <ul id="menu">
+                <a href="@Url.Action("Index", "Home", new { area = "" })"><li>Home</li></a>
+                <a href="@Url.Action("Gallery", "Home", new { area = "" })"><li>Gallery</li></a>
+                @if (commentsOn)
+                {
+                    <a href="#comments"><li>Comments</li></a>
+}
+                @if (!Loggedin)
+                {
+                    <a href="@Url.Action("Login", "Account", new { area = "" })"><li>Login</li></a>
+                    <a href="@Url.Action("Register", "Account", new { area = "" })"><li>Register</li></a>
+}
+                else
+                {
+                    <a href="@Url.Action("Logout", "Account", new { area = "" })"><li>Logout</li></a>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    @RenderBody()
+    @if (commentsOn)
+    {
+    <section class="comments section padd-15" id="comments">
+        <div class="container">
+            <div class="row padd-15">
+                <div class="section-title padd-15">
+                    <h3>Comments</h3>
+                    <div id="comment-wrapper">
+
+                        <div class="commentSection">
+                            @using (Html.BeginForm("PostComment", "Home", FormMethod.Post, new { role = "form" }))
+                            {
+                                <input type="hidden" name="returnUrl" value="@Request.Url.AbsoluteUri" />
+                                <textarea maxlength="140" name="comment" class="commentBox" placeholder="Place your comments here" type="textarea" id="tArea"></textarea>
+                                if (!string.IsNullOrWhiteSpace(TempData["Error"] as string))
+                                {
+                                    <p><span class="errorMessage">@(TempData["Error"] as string)</span></p>
+                                }
+                                <p><span class="counter" id="counter">140</span> Characters left</p>
+                                <button type="submit" class="btn">Post</button>
+                            }
+                            @Html.Partial("~/Views/Shared/_Comments.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    }
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="~/Comments.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿@using Portfolio_Petar.App_Start
+
+@{
+    var comments = DatabaseHelper.GetComments();
+}
+
+
+<ul class="comments">
+
+
+    @foreach (var comment in comments)
+    {
+        <li class= "commentUser">@(comment.UserID == null ? "Anonymous" : comment.User.Username):</li>
+        <li>@comment.CommentText<span class="commentDate">@comment.Date.ToString()</span></li>
+
+    }
+
+</ul>

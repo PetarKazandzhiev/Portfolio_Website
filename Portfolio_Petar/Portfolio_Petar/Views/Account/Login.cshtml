@@ -1,0 +1,35 @@
+﻿@using Portfolio_Petar.Models;
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    TempData["noComments"] = true;
+}
+
+@section styles{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+}
+
+<div class="login-box">
+    <h1> Login</h1>
+
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form" }))
+    {
+        <div class="textbox">
+            <i class="fa fa-user"></i>
+            @Html.TextBoxFor(m => m.Username, new { placeholder = "Username" })
+        </div>
+
+        <div class="textbox">
+            <i class="fa fa-lock"></i>
+            @Html.PasswordFor(m => m.Password, new { placeholder = "Password" }) <!-- A class that generates an HTML file and a function(Password For)-->
+        </div>
+
+
+        <input class="login-button" type="submit" value="Sign in">
+
+        if (!string.IsNullOrWhiteSpace(TempData["Error"] as string))
+        {
+            <p><span class="errorMessage">@(TempData["Error"] as string)</span></p>
+        }
+    }
+</div>
